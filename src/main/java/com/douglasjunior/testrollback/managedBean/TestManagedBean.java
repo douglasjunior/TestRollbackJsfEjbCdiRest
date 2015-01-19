@@ -2,17 +2,13 @@ package com.douglasjunior.testrollback.managedBean;
 
 import com.douglasjunior.testrollback.dao.GenericDao;
 import com.douglasjunior.testrollback.model.User;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 @Named(value = "testManagedBean")
 @ViewScoped
-@TransactionManagement(TransactionManagementType.CONTAINER) // I tested also as BEAN
 public class TestManagedBean extends AbstractManagedBean {
 
     @Inject
@@ -24,7 +20,7 @@ public class TestManagedBean extends AbstractManagedBean {
         user = new User();
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED) // I tested also as REQUIRES_NEW
+    @Transactional(Transactional.TxType.REQUIRED) // The solution
     public String test() {
         if (user.getSomeText() == null || user.getSomeText().isEmpty()) {
             sendErrorMessage("Text is riquired!");
